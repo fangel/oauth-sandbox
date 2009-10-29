@@ -1,0 +1,18 @@
+RewriteEngine On
+RewriteBase /
+
+RewriteRule ^login$ login.php [QSA,L]
+RewriteRule ^logout$ login.php?logout [QSA,L]
+
+RewriteRule ^issue-consumer-key$ consumer.php?issue [QSA,L]
+RewriteRule ^enable-nonce/([0-9]+)$ consumer.php?enable&id=$1 [QSA,L]
+RewriteRule ^disable-nonce/([0-9]+)$ consumer.php?disable&id=$1 [QSA,L]
+
+RewriteRule ^delete-token/([0-9]+)$ token.php?delete&id=$1 [QSA,L]
+
+RewriteRule ^access_token$  api.php?action=access_token [QSA,L]
+RewriteRule ^request_token$ api.php?action=request_token [QSA,L]
+RewriteRule ^authorize$     api.php?action=authorize [QSA,L]
+RewriteRule ^two_legged$    api.php?action=two_legged [QSA,L]
+RewriteRule ^three_legged$  api.php?action=three_legged [QSA,L]
+

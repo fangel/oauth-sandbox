@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>OAuth Sandbox</title>
+	<link rel="stylesheet" href="<?=PUBLIC_DIR?>style.css" type="text/css" media="screen" />
+	<script src="http://code.jquery.com/jquery-latest.js"></script>
+</head>
+<body>
+	<div id="wrapper">
+			<h1>OAuth Sandbox</h1>
+			<h2>A OAuth 1.0 Rev. A. implementation</h2>
+			<p>
+				<strong>Hi <?=$this->escape($this->user->username)?>. Welcome to the OAuth Sandbox.</strong>
+			</p>
+			<?php if( $this->authorized): ?>
+				<p>
+					<br />
+					<strong>You have authorized the application for access to your data.</strong><br/>
+					The consumer didn't specify a callback url, which most likely mean it's not a web app.
+					You must therefore manually return to the application and follow the instructions to continue.
+				</p>
+				<?php if( $this->rev_a ):?>
+					<p>
+						<br />
+						When your application prompts for a <strong>Verifier Code</strong>, you must enter this code: <br />
+						Verifier Code: <strong><tt><?=$this->verifier?></tt></strong>
+					</p>
+				<?php endif; ?>
+				<p>&nbsp;</p>
+			<?php else: ?>
+				<p>
+					The application <strong><?=$this->escape($this->consumer->name)?></strong> made by the user <strong><?=$this->escape($this->consumer_author->username)?></strong> has requested access to your protected resources.
+				</p>
+			
+				<?php if( ! $this->rev_a ): ?>
+					<p>
+						<br />
+						<strong>WARNING:</strong> The consumer that requested access isn't running OAuth 1.0 Rev. A. You should ensure that your consumer implementation is running Rev. A.
+					</p>
+				<?php endif; ?>
+			
+				<div class="input" id="authorize">
+					<form method="post" action="<?=$this->form_action?>">
+						<input type="hidden" name="token" value="<?=$this->csrf_token?>" />
+						<input type="submit" name="allow" value="Allow Access" />
+					</form>
+				</div>
+			<?php endif; ?>
+			
+			<p>
+				<strong>OAuth Sandbox</strong> is made by <a href="http://sevengoslings.net"><em>Morten Fangel</em></a> (<a href="http://twitter.com/fangel"><em>@fangel</em></a> ). 
+				But he did have some design help from <a href="http://theundersigned.net"><em>Thomas Silkjær</em></a> (<a href="http://twitter.com/silkjaer"><em>@silkjaer</em></a> )!
+			</p>
+
+	</div>
+</body>
+</html>

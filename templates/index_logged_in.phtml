@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>OAuth Sandbox</title>
+	<link rel="stylesheet" href="<?=PUBLIC_DIR?>style.css" type="text/css" media="screen" />
+	<script src="http://code.jquery.com/jquery-latest.js"></script>
+	<script type="text/javascript" src="<?=PUBLIC_DIR?>issue-consumer-token.js"></script>
+</head>
+<body>
+	<div id="wrapper">
+			<h1>OAuth Sandbox</h1>
+			<h2>A OAuth 1.0 Rev. A. implementation</h2>
+			<p>
+				<strong>Hi <?=$this->escape($this->user->username)?>. Welcome to the OAuth Sandbox.</strong> (<a href="<?=WEB_URL?>/logout">Logout</a>)
+			</p>
+			<p>
+				You are now ready to test your Consumer against this Service Provider. You will probably need these informations:
+				<br />
+				Request Token URL: <tt>http://<?=$_SERVER['HTTP_HOST'].WEB_URL?>/request_token</tt> <br />
+				User Authorization URL: <tt>http://<?=$_SERVER['HTTP_HOST'].WEB_URL?>/authorize</tt> <br />
+				Access Token URL: <tt>http://<?=$_SERVER['HTTP_HOST'].WEB_URL?>/access_token</tt> <br /> <br />
+			</p>
+			<p>
+				This Service Provider has two protected resources. One that only requires a two-legged call and one that requires a full three-legged call. <br />
+				The URLs for these resources are: <br />
+				Two-Legged: <tt>http://<?=$_SERVER['HTTP_HOST'].WEB_URL?>/two_legged</tt> <br />
+				Three-Legged: <tt>http://<?=$_SERVER['HTTP_HOST'].WEB_URL?>/three_legged</tt> <br />
+			<div id="two-columns">
+				<div class="two-column" id="column-one">
+					<h3>Consumer Keys</h3>
+					<p>
+						<?php if($this->consumers): ?>
+							You have been issued the following Consumer Keys:
+
+							<div id="consumers">
+								<?php foreach( $this->consumers AS $consumer ): ?>
+									<div class="consumer">
+										<br />
+										<strong><?=$this->escape($consumer->name)?></strong><br />
+										Key: <tt><?=$consumer->key?></tt><br />
+										Secret: <tt><?=$consumer->secret?></tt><br />
+										<?php if( $consumer->check_nonce): ?>
+											Nonce checking is enabled. <a href="<?=WEB_URL?>/disable-nonce/<?=$consumer->id?>">Disable</a>
+										<?php else: ?>
+											Nonce checking is <strong>DISABLED</strong>. <a href="<?=WEB_URL?>/enable-nonce/<?=$consumer->id?>">Enable</a>											
+										<?php endif; ?>
+										<br />
+									</div>
+								<?php endforeach; ?>
+							</div>
+						<?php else: ?>
+							None!
+						<?php endif; ?>
+					</p>
+					<div id="issue-consumer-key">
+						<div id="step_1">
+							<p>Request a new Consumer Key for you app</p>
+							<button>Request Consumer Key</button>
+						</div>
+						<div id="step_2">
+							<p>Please give a name to identify the consumer</p>
+							<input type="text" />
+						</div>
+						<div id="teh_form">
+							<form action="<?=WEB_URL?>/issue-consumer-key" method="post">
+								<input type="hidden" name="name" />
+							</form>
+						</div>
+					</div>
+				</div>
+				<div class="two-column" id="column-two">
+					<h3>Apps you've authorized</h3>
+					<p>
+						<?php if( $this->access_tokens ): ?>
+							<div id="access_tokens">
+								<?php foreach( $this->access_tokens AS $token ): ?>
+									<div class="access_token">
+										<br />
+										<strong><?=$this->escape($token->consumer->name)?></strong> 
+										(<a href="<?=WEB_URL?>/delete-token/<?=$token->id?>">Revoke Access</a>)
+										<br />
+										Token: <tt><?=$token->key?></tt><br />
+										Secret: <tt><?=$token->secret?></tt>
+									</div>
+								<?php endforeach; ?>
+							</div>
+						<?php else: ?>
+							You haven't authorized any Consumers for access yet.
+						<?php endif; ?>
+					</p>
+				</div>
+				<br clear="both" />
+			</div>
+			
+			<p>
+				<strong>OAuth Sandbox</strong> is made by <a href="http://sevengoslings.net"><em>Morten Fangel</em></a> (<a href="http://twitter.com/fangel"><em>@fangel</em></a> ). 
+				But he did have some design help from <a href="http://theundersigned.net"><em>Thomas Silkjær</em></a> (<a href="http://twitter.com/silkjaer"><em>@silkjaer</em></a> )!
+			</p>
+
+	</div>
+</body>
+</html>

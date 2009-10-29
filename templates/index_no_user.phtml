@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>OAuth Sandbox</title>
+	<link rel="stylesheet" href="<?=PUBLIC_DIR?>style.css" type="text/css" media="screen" />
+	<script src="http://code.jquery.com/jquery-latest.js"></script>
+	<script type="text/javascript" src="<?=PUBLIC_DIR?>login.js"></script>
+</head>
+<body>
+	<div id="wrapper">
+			<h1>OAuth Sandbox</h1>
+			<h2>A OAuth 1.0 Rev. A. implementation</h2>
+			<p>
+				<strong>Welcome to the OAuth Sandbox.</strong>
+			</p>
+			<p>
+				This is a <a href="http://oauth.net">OAuth</a> Service Provider, running according to the <strong>1.0 Rev. A</strong> spec.
+				If you need to your Consumer implementation, this is the place for you.
+			</p>
+			<?php if( ! $this->failed && ! $this->login_reason ): ?>
+				<p>
+					This is in all aspects a real Service Provider, so I do require a signup before you can be issued your Consumer Secret. 
+					You must also hold an account (which can be the same) to authorize the Consumers tokens.
+					The authorized tokens are then tied to the account in question.
+					<br />
+					But I know that you have no interest in creating useless user account and you don't want to gamble on me keeping your password safe. 
+					And I don't want to keep you password safe.
+					So instead of a password I have the <em>Kitten-test</em>. 
+					You just identify yourself with a unique name and your favorite of 6 Kitten pictures.
+					<br />
+					I don't even want your email, so you know I wont sell it to spammers.
+				</p>
+			<?php endif; ?>
+			<?php if( $this->login_reason): ?>
+				<p>
+					<br />
+					<strong><?=$this->escape($this->login_reason)?></strong>
+				</p>
+			<?php endif; ?>
+			<?php if( $this->failed): ?>
+				<p>
+					<br /><strong>Sorry</strong><br />
+					<?php if( $this->reason == 'login'): ?>
+						Your login failed. Do you have a user and did you ask the correct kitten for access to your account?
+					<?php else: ?>
+						Sorry, the username is already taken. Perhaps by you already?
+					<?php endif; ?>
+				</p>
+			<?php endif; ?>
+			
+			<div id="login_process">
+				
+				<div id="step_1">
+					<?php if( ! $this->failed && ! $this->login_reason ): ?>
+						<p>So what do you want to do?</p>
+					<?php elseif( $this->login_reason): ?>
+						<p>So please login or signup</p>
+					<?php else: ?>
+						<p>Try again?</p>
+					<?php endif; ?>
+					<div class="input" id="needs">
+						<button id="need_login">Login</button>
+						<button id="need_signup">Signup</button>
+					</div>
+				</div>
+				
+				<div id="step_2">
+					<p>Enter your username:</p>
+					<div class="input" id="username">
+						<input type="text">
+					</div>
+				</div>
+				
+				<div id="step_3">
+					<p>Which kitten are guarding access to your account?</p>
+					<div class="input" id="kittens">
+						<ul>
+							<li><img src="<?=PUBLIC_DIR?>kittens/kitten_able.jpg" class="kitten" title="Kitty-Agent &quot;Able&quot;"></li>
+							<li><img src="<?=PUBLIC_DIR?>kittens/kitten_baker.jpg" class="kitten" title="Kitty-Agent &quot;Baker&quot;"></li>
+							<li><img src="<?=PUBLIC_DIR?>kittens/kitten_charlie.jpg" class="kitten" title="Kitty-Agent &quot;Charlie&quot;"></li>
+							<li><img src="<?=PUBLIC_DIR?>kittens/kitten_dog.jpg" class="kitten" title="Kitty-Agent &quot;Dog&quot;"></li>
+							<li><img src="<?=PUBLIC_DIR?>kittens/kitten_easy.jpg" class="kitten" title="Kitty-Agent &quot;Easy&quot;"></li>
+							<li><img src="<?=PUBLIC_DIR?>kittens/kitten_fox.jpg" class="kitten" title="Kitty-Agent &quot;Fox&quot;"></li>
+						</ul>
+						<a href="<?=PUBLIC_DIR?>credits.html">Photo Credits</a> (Teaser: They are all Creative Common photos from Flickr)
+					</div>
+				</div>
+				
+				<div id="teh_form">
+					<form action="<?=WEB_URL?>/login" method="post">
+						<input type="text" name="username" value="" />
+						<input type="text" name="kitten" value="" />
+						<input type="text" name="return" value="<?=$this->escape($this->login_return_url)?>" />
+						<input type="checkbox" name="signup" value="1" />
+					</form>
+				</div>
+			</div>
+			
+			<p>
+				<strong>OAuth Sandbox</strong> is made by <a href="http://sevengoslings.net"><em>Morten Fangel</em></a> (<a href="http://twitter.com/fangel"><em>@fangel</em></a> ). 
+				But he did have some design help from <a href="http://theundersigned.net"><em>Thomas Silkjær</em></a> (<a href="http://twitter.com/silkjaer"><em>@silkjaer</em></a> )!
+			</p>
+	</div>
+</body>
+</html>
