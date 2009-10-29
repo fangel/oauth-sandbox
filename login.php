@@ -14,7 +14,7 @@ if( $logout ) {
 	session_destroy();
 } else {
 	if( ! in_array( $kitten, array('able','baker','charlie','dog','easy','fox') ) ) {
-		header( 'Location: ' . WEB_URL );
+		header( 'Location: http://' . $_SERVER['HTTP_HOST'] . WEB_URL . '/');
 		die;
 	}
 	
@@ -33,7 +33,7 @@ if( $logout ) {
 			
 			if( isset($_POST['return']) && $_POST['return'] )
 				AF::registry()->messages->login_return_url = preg_replace('/\p{C}/u','', $_POST['return']);
-			header("Location: " . WEB_URL . '/');
+			header('Location: http://' . $_SERVER['HTTP_HOST'] . WEB_URL . '/');
 			die;
 		}
 	} else {
@@ -46,21 +46,15 @@ if( $logout ) {
 			
 			if( isset($_POST['return']) && $_POST['return'] )
 				AF::registry()->messages->login_return_url = preg_replace('/\p{C}/u','', $_POST['return']);
-			header("Location: " . WEB_URL . '/');
+			header('Location: http://' . $_SERVER['HTTP_HOST'] . WEB_URL . '/');
 			die;
 		}
 	}
 }
 
-$url = WEB_URL . '/';
+$url = 'http://' . $_SERVER['HTTP_HOST'] . WEB_URL . '/';
 if( isset($_POST['return']) && $_POST['return'] ) $url = preg_replace('/\p{C}/u','', $_POST['return']);
 
 header("Location: " . $url);
 die;
-
-/*
-	die;
-*/
-
-var_dump($username, $kitten, $signup);
 
